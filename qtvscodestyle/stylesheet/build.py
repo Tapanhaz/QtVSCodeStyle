@@ -95,6 +95,7 @@ def _parse_url(stylesheet: str, dir_path: Path, is_designer: bool = False) -> tu
 
 def _output_converted_svg_file(colors: dict[str, Optional[Color]], urls: set[_Url]) -> None:
     svg_codes: dict[str, str] = {}  # {file name: svg code}
+    '''
     for content in resources.contents("qtvscodestyle.vscode.icons"):
         if ".svg" not in content:  # Only svg file
             continue
@@ -106,6 +107,18 @@ def _output_converted_svg_file(colors: dict[str, Optional[Color]], urls: set[_Ur
             continue
         svg_code = resources.read_text("qtvscodestyle.stylesheet.icons", content)
         svg_codes[content] = svg_code
+    '''
+    vscode_icons_path = files("qtvscodestyle.vscode.icons")
+    for file_path in vscode_icons_path.iterdir():
+        if file_path.is_file() and file_path.suffix == ".svg": 
+            svg_code = file_path.read_text()
+            svg_codes[file_path.name] = svg_code
+
+    stylesheet_icons_path = files("qtvscodestyle.stylesheet.icons")
+    for file_path in stylesheet_icons_path.iterdir():
+        if file_path.is_file() and file_path.suffix == ".svg": 
+            svg_code = file_path.read_text()
+            svg_codes[file_path.name] = svg_code
 
     for url in urls:
         color = colors["$" + url.id]
