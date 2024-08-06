@@ -137,7 +137,8 @@ def _load_stylesheet(
 ) -> str:
     if type(theme) is Theme:
         theme_file_name = theme.value["file_name"]
-        json_text = resources.read_text("qtvscodestyle.vscode.theme", theme_file_name)
+        theme_path = resources.files("qtvscodestyle.vscode.theme") / theme_file_name
+        json_text = theme_path.read_text()
         theme_property = _loads_jsonc(json_text)
         theme_property["type"] = theme.value["type"]
     elif type(theme) is str or type(theme) is Path:
