@@ -4,7 +4,8 @@ import json
 import operator
 import re
 from dataclasses import dataclass
-from distutils.version import StrictVersion
+#from distutils.version import StrictVersion
+from packaging.version import Version
 from importlib import resources
 from pathlib import Path
 from typing import Optional
@@ -54,7 +55,8 @@ def _parse_env_patch(stylesheet: str) -> dict[str, str]:
         else:
             raise SyntaxError(f"invalid character in qualifier. Available qualifiers {list(operators.keys())}")
 
-        is_true = operators[qualifier](StrictVersion(qt_version), StrictVersion(version))
+        #is_true = operators[qualifier](StrictVersion(qt_version), StrictVersion(version))
+        is_true = operators[qualifier](Version(qt_version), Version(version))
         replacements[match_text] = property["value"] if is_true else ""
     return replacements
 
@@ -118,7 +120,9 @@ def _output_converted_svg_file(colors: dict[str, Optional[Color]], urls: set[_Ur
 def build_stylesheet(
     colors: dict[str, Optional[Color]], theme_type: str, output_svg_path: Path, is_designer: bool
 ) -> str:
-    stylesheet_template = resources.read_text("qtvscodestyle.stylesheet", "template.qss")
+    #stylesheet_template = resources.read_text("qtvscodestyle.stylesheet", "template.qss")
+    stylesheet_path = resources.files("qtvscodestyle.stylesheet") / "template.qss"
+    stylesheet_template = stylesheet_path.read_text()
     # Convert id for stylesheet variable
     colors = {f"${id}".replace(".", "_"): color for id, color in colors.items()}
 
