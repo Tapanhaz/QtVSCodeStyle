@@ -110,13 +110,13 @@ def _output_converted_svg_file(colors: dict[str, Optional[Color]], urls: set[_Ur
     '''
     vscode_icons_path = resources.files("qtvscodestyle.vscode.icons")
     for file_path in vscode_icons_path.iterdir():
-        if file_path.is_file() and file_path.suffix == ".svg": 
+        if file_path.is_file() and file_path.match("*.svg"):  #file_path.suffix == ".svg": 
             svg_code = file_path.read_text()
             svg_codes[file_path.name] = svg_code
 
     stylesheet_icons_path = resources.files("qtvscodestyle.stylesheet.icons")
     for file_path in stylesheet_icons_path.iterdir():
-        if file_path.is_file() and file_path.suffix == ".svg": 
+        if file_path.is_file() and file_path.match("*.svg"):  #file_path.suffix == ".svg": 
             svg_code = file_path.read_text()
             svg_codes[file_path.name] = svg_code
 
